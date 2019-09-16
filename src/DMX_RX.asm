@@ -1,12 +1,3 @@
-; File:  DMX512RecDemo.asm 
-; DMX512 Receiver 
-; This file uses a PIC18F2420 device to receive DMX-512 data and store it 
-; into a 512 byte receive buffer.   
-; For demonstration purposes, a selected data slot is written to the  
-; CCP module.  The CCP module is configured in PWM mode and the received 
-; data adjusts the duty cycle.  If a resistor and LED is connected to the 
-; PWM output, the received DMX data can be visually observed.  
- 
 	list p=16f1827
 	#include <P16F1827.inc>
 
