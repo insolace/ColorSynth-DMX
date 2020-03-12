@@ -69,40 +69,40 @@ WBDisc
 WBElse
 	banksel	RCSTA
 	btfss	RCSTA,FERR			; test for frame error 
-	bra		WaitBreak           ; continue waiting until a frame error is detected 
+	bra	WaitBreak			; continue waiting until a frame error is detected 
 	movf	RCREG,W				; read the Receive buffer to clear the error condition 
  
 ; second loop, waiting for the START code 
 WaitForStart 
 	banksel	PIR1
 	btfss	PIR1,RCIF			; wait until a byte is correctly received 
-	bra		WaitForStart 
+	bra	WaitForStart 
 	banksel	RCSTA
 	btfsc	RCSTA,FERR 
-	bra		WaitForStart 
+	bra	WaitForStart 
 	movf	RCREG,W	 
  
 ; check for the START code value, if it is not 0, ignore the rest of the frame 
-    andlw   0xff 
+	andlw   0xff 
 	btfss	STATUS,Z			; 
-    bra     MainLoop           	; ignore the rest of the frame if not zero  
+	bra     MainLoop			; ignore the rest of the frame if not zero  
  
 ; init receive counter and buffer pointer         
 	banksel	CountL
-    clrf    CountL 
-    clrf    CountH 
-;    lfsr    0,RxBuffer 
+	clrf    CountL 
+	clrf    CountH 
+;       lfsr    0,RxBuffer 
  
 ; third loop, receiving 512 bytes of data 
 WaitForData 
 	banksel	RCSTA
-    btfsc   RCSTA,FERR          ; if a new framing error is detected (error or short frame) 
-    bra     RXend               ; the rest of the frame is ignored and a new synchronization 
-    							; is attempted 
+	btfsc   RCSTA,FERR			; if a new framing error is detected (error or short frame) 
+	bra     RXend				; the rest of the frame is ignored and a new synchronization 
+						; is attempted 
 
 	banksel	PIR1 
 	btfss	PIR1,RCIF			; wait until a byte is correctly received 
-	bra		WaitForData			; 
+	bra	WaitForData			 
 	banksel	RCREG
 	movf	RCREG,W				;  
 	banksel	CurRX
